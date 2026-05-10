@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>やまっち</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#ffffff;
+color:#222;
+overflow-x:hidden;
+}
+
+header{
+position:sticky;
+top:0;
+background:white;
+border-bottom:1px solid #e5e7eb;
+padding:14px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:100;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo img{
+width:54px;
+height:54px;
+border-radius:50%;
+}
+
+nav{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+nav button{
+background:#f3f4f6;
+border:none;
+padding:10px 16px;
+border-radius:14px;
+cursor:pointer;
+transition:0.3s;
+font-size:14px;
+}
+
+nav button:hover{
+transform:translateY(-4px) scale(1.05);
+background:#e5e7eb;
+}
+
+.page{
+display:none;
+padding:40px 24px;
+min-height:100vh;
+animation:fade 0.4s ease;
+}
+
+.active{
+display:block;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.hero{
+background:linear-gradient(135deg,#eff6ff,#ffffff);
+border:1px solid #dbeafe;
+border-radius:30px;
+padding:40px;
+display:flex;
+gap:30px;
+align-items:center;
+margin-bottom:32px;
+}
+
+.hero img{
+width:120px;
+height:120px;
+border-radius:50%;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border:1px solid #ececec;
+border-radius:24px;
+padding:24px;
+cursor:pointer;
+
+transition:
+transform 0.45s cubic-bezier(0.22,1,0.36,1),
+box-shadow 0.45s ease,
+background 0.45s ease;
+
+box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+.card:hover{
+transform:
+translateY(-12px)
+scale(1.06);
+
+box-shadow:
+0 22px 40px rgba(0,0,0,0.14);
+
+background:#f8fbff;
+}
+
+.card:active{
+transform:scale(0.98);
+}
+
+.chat-wrap{
+max-width:900px;
+margin:auto;
+}
+
+.messages{
+margin-top:20px;
+}
+
+.message{
+display:flex;
+gap:12px;
+margin-bottom:24px;
+animation:fade 0.3s ease;
+}
+
+.user{
+justify-content:flex-end;
+}
+
+.avatar{
+width:46px;
+height:46px;
+border-radius:50%;
+overflow:hidden;
+flex-shrink:0;
+}
+
+.avatar img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.bubble{
+padding:18px;
+border-radius:22px;
+max-width:72%;
+line-height:1.7;
+}
+
+.ai{
+background:#f3f4f6;
+}
+
+.userbubble{
+background:#2563eb;
+color:white;
+}
+
+.highlight{
+color:#dc2626;
+font-weight:bold;
+}
+
+.input{
+display:flex;
+gap:12px;
+margin-top:20px;
+}
+
+textarea{
+flex:1;
+padding:14px;
+border-radius:18px;
+border:1px solid #ddd;
+resize:none;
+height:58px;
+font-size:15px;
+}
+
+.send{
+background:#2563eb;
+color:white;
+border:none;
+padding:14px 24px;
+border-radius:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.send:hover{
+transform:scale(1.05);
+}
+
+.memo{
+background:#f9fafb;
+border:1px solid #e5e7eb;
+border-radius:22px;
+padding:22px;
+margin-bottom:18px;
+}
+
+.month{
+background:#f3f4f6;
+padding:16px;
+border-radius:18px;
+cursor:pointer;
+margin-bottom:12px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.month:hover{
+transform:translateX(6px);
+background:#e5e7eb;
+}
+
+.hidden{
+display:none;
+}
+
+.week{
+margin-left:14px;
+}
+
+@media(max-width:900px){
+
+.hero{
+flex-direction:column;
+text-align:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+<img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png">
+
+<div>
+<div style="font-size:24px;font-weight:bold;">
+やまっち
+</div>
+
+<div style="font-size:12px;color:#666;">
+山商 生徒会AI
+</div>
+</div>
+
+</div>
+
+<nav>
+<button onclick="showPage('home')">ホーム</button>
+<button onclick="showPage('chat')">チャット</button>
+<button onclick="showPage('minutes')">議事録</button>
+<button onclick="showPage('news')">生徒会報</button>
+<button onclick="openInstagram()">Instagram</button>
+<button onclick="openAdmin()">役員専用</button>
+</nav>
+
+</header>
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+<img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png">
+
+<div>
+
+<h1>
+ようこそ、やまっちへ 🌱
+</h1>
+
+<p style="line-height:1.8;font-size:18px;color:#555;">
+生徒と生徒会をつなぐ、
+参加型AIプラットフォーム。
+</p>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="showPage('chat')">
+<h2>💬 チャット</h2>
+<p>学校について話そう</p>
+</div>
+
+<div class="card" onclick="showPage('minutes')">
+<h2>📚 議事録</h2>
+<p>毎週の定例会記録</p>
+</div>
+
+<div class="card" onclick="showPage('news')">
+<h2>📰 生徒会報</h2>
+<p>月ごとの活動まとめ</p>
+</div>
+
+<div class="card" onclick="openInstagram()">
+<h2>📸 Instagram</h2>
+<p>@YAMASYO01</p>
+</div>
+
+<div class="card" onclick="openAdmin()">
+<h2>🔒 役員専用</h2>
+</div>
+
+</div>
+
+</section>
+
+<section id="chat" class="page">
+
+<div class="chat-wrap">
+
+<h1>💬 チャット</h1>
+
+<div id="messages" class="messages">
+
+<div class="message">
+
+<div class="avatar">
+<img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png">
+</div>
+
+<div class="bubble ai">
+
+こんにちは 🌱<br><br>
+
+学校について感じたことや、
+「もっとこうなったらいいな」
+と思うことを自由に送ってください！
+
+</div>
+
+</div>
+
+</div>
+
+<div class="input">
+
+<textarea id="input" placeholder="メッセージを入力"></textarea>
+
+<button class="send" onclick="sendMessage()">
+送信
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="minutes" class="page">
+
+<h1>📚 議事録</h1>
+
+<div class="month" onclick="toggle('apr')">
+▶ 4月
+</div>
+
+<div id="apr" class="hidden">
+
+<div class="memo week">
+<b>第1週</b>
+<ul>
+<li>新入生歓迎会</li>
+<li>委員会説明会準備</li>
+</ul>
+</div>
+
+<div class="memo week">
+<b>第2週</b>
+<ul>
+<li>昼休み改善案</li>
+<li>意見箱運営</li>
+</ul>
+</div>
+
+</div>
+
+</section>
+
+<section id="news" class="page">
+
+<h1>📰 生徒会報</h1>
+
+<div class="month" onclick="toggle('m4')">▶ 4月</div>
+
+<div id="m4" class="hidden">
+
+<div class="memo">
+<ul>
+<li>新入生歓迎会開催</li>
+<li>委員会説明会実施</li>
+</ul>
+</div>
+
+</div>
+
+</section>
+
+<section id="admin" class="page">
+
+<h1>🔒 役員専用</h1>
+
+<div class="memo">
+
+<h2>📝 AI要約</h2>
+
+<ul>
+<li>昼休みスペース改善案</li>
+<li>静かな休憩場所の需要増加</li>
+</ul>
+
+</div>
+
+</section>
+
+<script>
+
+function showPage(id){
+
+document.querySelectorAll('.page').forEach(page=>{
+page.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+function toggle(id){
+
+document.getElementById(id).classList.toggle('hidden');
+
+}
+
+function openInstagram(){
+
+window.open("https://www.instagram.com/yamasyo01/");
+
+}
+
+function openAdmin(){
+
+const pass = prompt("パスワードを入力してください");
+
+if(pass === "yamasyo"){
+
+showPage('admin');
+
+}else{
+
+alert("パスワードが違います");
+
+}
+
+}
+
+function sendMessage(){
+
+const input = document.getElementById("input");
+
+const text = input.value.trim();
+
+if(!text) return;
+
+const messages = document.getElementById("messages");
+
+messages.innerHTML += `
+<div class="message user">
+<div class="bubble userbubble">
+${text}
+</div>
+</div>
+`;
+
+setTimeout(()=>{
+
+messages.innerHTML += `
+<div class="message">
+
+<div class="avatar">
+<img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png">
+</div>
+
+<div class="bubble ai">
+
+現在、生徒会でも似た意見が増えています。<br><br>
+
+<span class="highlight">
+その意見、もっと聞いてみたいです。
+</span>
+
+</div>
+
+</div>
+`;
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:'smooth'
+});
+
+},500);
+
+input.value="";
+
+}
+
+document.getElementById("input").addEventListener("keydown",function(e){
+
+if(e.key === "Enter" && !e.shiftKey){
+
+e.preventDefault();
+
+sendMessage();
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
